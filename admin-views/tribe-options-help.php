@@ -156,6 +156,48 @@ $more_text = __('More...', 'tribe-events-calendar');
 		<h3><?php _e('Forums: Because Everyone Needs A Buddy', 'tribe-events-calendar');?></h3>
 		<?php echo ( apply_filters ('tribe_help_tab_forumtext', $forum_text ) );?>
 
+		<?php if (class_exists('TribeEventsProSupport')) { ?>
+		<h3><?php _e('System Information', 'tribe-events-calendar');?></h3>
+		<style>
+			dl.support-stats {
+				background-color: #333;
+				color: #aaa;
+				margin: 0 15px;
+				padding: 10px;
+				max-height: 400px;
+				overflow: scroll;
+			}
+			dl.support-stats dt {
+				text-transform: uppercase;
+				float: left;
+				width: 200px;
+			}
+			dl.support-stats dd {
+				margin-left: 200px;
+			}
+			dl.support-stats ul {
+				list-style: none;
+				margin-left: 0;
+			}
+			dl.support-stats ul li {
+				display: block;
+			}
+			dl.support-stats dd.support-stats-string {
+
+			}
+			dl.support-stats dd.support-stats-null {
+
+			}
+			dl.support-stats dd.support-stats-bool {
+
+			}
+			dl.support-stats dd.support-stats-array {
+
+			}
+		</style>
+		<?php echo TribeEventsProSupport::formattedSupportStats(); ?>
+		<?php } ?>
+
 		<h3><?php _e('Not getting help?', 'tribe-events-calendar'); ?></h3>
 		<?php echo( apply_filters( 'tribe_help_tab_outro', $outro_text ) ); ?>
 
