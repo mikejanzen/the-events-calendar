@@ -2893,12 +2893,7 @@ if ( !class_exists( 'TribeEvents' ) ) {
 		public function save_venue_data( $postID = null, $post=null ) {
 			global $_POST;
 
-			//There is a possibility to get stuck in an infinite loop.
-			//That would be bad.
-			remove_action( 'save_post', array( $this, 'save_venue_data' ), 16, 2 );
-
-			if( !isset($_POST['venue']) )
-				$_POST['venue'] = null;
+			if( !isset($_POST['venue']) ) $_POST['venue'] = null;
 
 			// don't do anything on autosave or auto-draft either or massupdates
 			// Or inline saves, or data being posted without a venue Or
@@ -2924,6 +2919,9 @@ if ( !class_exists( 'TribeEvents' ) ) {
 					$data['Venue'] = __('Unnamed Venue', 'tribe-events-calendar');
 				}
 			}
+
+			// Unhook this action to avoid a loop of doom
+			remove_action( 'save_post', array( $this, 'save_venue_data' ), 16, 2 );
 
 			$data = stripslashes_deep($data);
 			$venue_id = TribeEventsAPI::updateVenue( $postID, $data );
