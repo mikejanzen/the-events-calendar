@@ -1869,11 +1869,10 @@ input[name*="tribe-bar-"]:-moz-placeholder {
 	
 	/* = Global Grid Template Styles (Large Calendar & Week)
    	   @ Template: month.php & week.php
-	=============================================*/	
+	=============================================*/
 	#tribe-mobile-container {
 		display: block;
-		margin: 0 auto;
-		max-width: 600px;
+		margin: 0 auto 10px;
 	}
 	.tribe-events-calendar .tribe-events-has-events:after {
 		content: '';
@@ -1887,22 +1886,22 @@ input[name*="tribe-bar-"]:-moz-placeholder {
 	}
 	/* Actual Event Styles */
 	#tribe-mobile-container .hentry.vevent {
-		padding: 20px 0 25px;
+		padding: 20px 0 16px;
 		margin-bottom: 0;
 	}
 	#tribe-mobile-container .hentry.vevent ~ .hentry.vevent {
-		padding: 22px 0;
+		padding: 15px 0;
 		border-top: 1px solid #ddd;
 	}
 	#tribe-mobile-container .hentry.vevent h4 {
-		font-size: 1.6em;
-		margin: 0 0 5px;
+		font-size: 1.25em;
+		margin: 0 0 2px;
 		line-height: 1.35;
 	}
 	#tribe-mobile-container .hentry.vevent .time-details {
 		font-size: 13px;
 		font-weight: bold;
-		margin: 0 0 10px;
+		margin: 0 0 2px;
 	}
 	#tribe-mobile-container .hentry.vevent .tribe-events-event-image {
 		float: left;

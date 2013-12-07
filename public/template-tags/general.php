@@ -1006,8 +1006,9 @@ if ( class_exists( 'TribeEvents' ) ) {
 		if( $additional ){
 			$json = array_merge( (array)$json, (array)$additional );
 		}
-
+		
 		return json_encode( $json );
+		
 	}
 
 	/**
