@@ -1875,8 +1875,7 @@ input[name*="tribe-bar-"]:-moz-placeholder {
 		margin: 0 auto;
 		max-width: 600px;
 	}
-	.tribe-events-calendar .tribe-events-has-events:after,
-	.tribe-grid-body .tribe-events-has-events .tribe-events-daynum:after {
+	.tribe-events-calendar .tribe-events-has-events:after {
 		content: '';
 		display: block;
 		height: 8px;
@@ -2006,7 +2005,6 @@ input[name*="tribe-bar-"]:-moz-placeholder {
 		font-size: 12px;
 		line-height: 32px;
 		height: 32px;
-		max-width: 600px;
 		padding: 0 10px;
 		font-weight: normal;
 	}
