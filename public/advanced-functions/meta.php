@@ -398,6 +398,19 @@ if ( class_exists( 'Tribe_Meta_Factory' ) ) {
 		) );
 
 	/**
+	 * Register Meta: Venue Address
+	 *
+	 * @group tribe_event_venue
+	 */
+	tribe_register_meta( 'tribe_event_venue_address', array(
+		'classes' => array('meta_before'=>array('location')),
+		'priority' => 20,
+		'label' => __( 'Address:', 'tribe-events-calendar' ),
+		'filter_callback' => array( 'Tribe_Register_Meta', 'venue_address' ),
+		'group' => 'tribe_event_venue'
+	) );
+
+	/**
 	 * Register Meta: Venue Phone
 	 *
 	 * @group tribe_event_venue
@@ -405,21 +418,8 @@ if ( class_exists( 'Tribe_Meta_Factory' ) ) {
 	tribe_register_meta( 'tribe_event_venue_phone', array(
 			'classes' => array('meta_before'=>array('tel')),
 			'label' => __( 'Phone:', 'tribe-events-calendar' ),
-			'priority' => 20,
-			'callback' => 'tribe_get_phone',
-			'group' => 'tribe_event_venue'
-		) );
-
-	/**
-	 * Register Meta: Venue Address
-	 *
-	 * @group tribe_event_venue
-	 */
-	tribe_register_meta( 'tribe_event_venue_address', array(
-			'classes' => array('meta_before'=>array('location')),
 			'priority' => 30,
-			'label' => __( 'Address:', 'tribe-events-calendar' ),
-			'filter_callback' => array( 'Tribe_Register_Meta', 'venue_address' ),
+			'callback' => 'tribe_get_phone',
 			'group' => 'tribe_event_venue'
 		) );
 
