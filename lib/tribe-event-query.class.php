@@ -642,7 +642,7 @@ if ( ! class_exists( 'TribeEventsQuery' ) ) {
 				$order   = ( isset( $query->order ) && ! empty( $query->order ) ) ? $query->order : $query->get( 'order' );
 				$orderby = ( isset( $query->orderby ) && ! empty( $query->orderby ) ) ? $query->orderby : $query->get( 'orderby' );
 
-				$order_sql = "DATE(MIN({$postmeta_table}.meta_value)) {$order}, TIME({$postmeta_table}.meta_value) {$order}";
+				$order_sql = "DATE({$postmeta_table}.meta_value) {$order}, TIME({$postmeta_table}.meta_value) {$order}";
 
 				do_action( 'log', 'orderby', 'default', $orderby );
 
@@ -763,8 +763,8 @@ if ( ! class_exists( 'TribeEventsQuery' ) ) {
 						$raw_counts = $wpdb->get_results(
 							$wpdb->prepare(
 								"
-							SELECT 	tribe_event_start.post_id as ID, 
-									tribe_event_start.meta_value as EventStartDate, 
+							SELECT 	tribe_event_start.post_id as ID,
+									tribe_event_start.meta_value as EventStartDate,
 									DATE_FORMAT( tribe_event_end_date.meta_value, '%1\$s') as EventEndDate,
 									{$wpdb->posts}.menu_order as menu_order
 							FROM $wpdb->postmeta AS tribe_event_start
