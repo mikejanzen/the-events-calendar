@@ -30,6 +30,29 @@ if ( ! class_exists( 'Tribe__Events__Query' ) ) {
 		}
 
 		/**
+		 * determines whether a date field can be injected into various parts of a query
+		 *
+		 * @param $query WP_Query Query object
+		 *
+		 * @return boolean
+		 */
+		public static function can_inject_date_field( $query ) {
+			if ( empty( $query->query_vars['fields'] ) ) {
+				return true;
+			}
+
+			if ( 'ids' === $query->query_vars['fields'] ) {
+				return false;
+			}
+
+			if ( 'id=>parent' === $query->query_vars['fields'] ) {
+				return false;
+			}
+
+			return true;
+		}
+
+		/**
 		 * Set any query flags
 		 *
 		 * @param WP_Query $query
@@ -381,7 +404,13 @@ if ( ! class_exists( 'Tribe__Events__Query' ) ) {
 		 * @todo remove in 3.10
 		 */
 		public static function posts_groupby( $groupby_sql, $query ) {
-			if ( ! empty( $query->tribe_is_event_query ) || ! empty( $query->tribe_is_multi_posttype ) ) {
+			if (
+				(
+					! empty( $query->tribe_is_event_query )
+					|| ! empty( $query->tribe_is_multi_posttype )
+				)
+				&& self::can_inject_date_field( $query )
+			) {
 				if ( has_filter( 'tribe_events_query_posts_groupby' ) ) {
 					_deprecated_function( "The 'tribe_events_query_posts_groupby' filter", '3.8', " the 'posts_groupby' filter" );
 
@@ -412,7 +441,10 @@ if ( ! class_exists( 'Tribe__Events__Query' ) ) {
 		 * @return string The modified FIELDS statement.
 		 */
 		public static function posts_fields( $field_sql, $query ) {
-			if ( ! empty( $query->tribe_is_event ) ) {
+			if (
+				! empty( $query->tribe_is_event )
+				&& self::can_inject_date_field( $query )
+			) {
 				global $wpdb;
 				$postmeta_table             = self::postmeta_table( $query );
 				$fields                     = array();
@@ -435,7 +467,10 @@ if ( ! class_exists( 'Tribe__Events__Query' ) ) {
 		 * @return string The modified FIELDS statement.
 		 */
 		public static function multi_type_posts_fields( $field_sql, $query ) {
-			if ( ! empty( $query->tribe_is_multi_posttype ) ) {
+			if (
+				! empty( $query->tribe_is_multi_posttype )
+				&& self::can_inject_date_field( $query )
+			) {
 				global $wpdb;
 				$postmeta_table = self::postmeta_table( $query );
 				$fields         = array();
@@ -644,7 +679,9 @@ if ( ! class_exists( 'Tribe__Events__Query' ) ) {
 				$orderby = ( isset( $query->orderby ) && ! empty( $query->orderby ) ) ? $query->orderby : $query->get( 'orderby' );
 
 //				$order_sql = "DATE(MIN({$postmeta_table}.meta_value)) {$order}, TIME({$postmeta_table}.meta_value) {$order}";
-				$order_sql = "EventStartDate {$order}";
+				if ( self::can_inject_date_field( $query ) ) {
+					$order_sql = "EventStartDate {$order}";
+				}
 
 				do_action( 'log', 'orderby', 'default', $orderby );
 
@@ -665,8 +702,11 @@ if ( ! class_exists( 'Tribe__Events__Query' ) ) {
 						// we've already setup $order_sql
 						break;
 				}
+
+				// trim trailing characters
+				$order_sql = trim( $order_sql, ', \t\n\r\0\x0B' );
 			} else {
-				if ( $query->tribe_is_multi_posttype ) {
+				if ( $query->tribe_is_multi_posttype && self::can_inject_date_field( $query ) ) {
 					if ( $query->get( 'orderby' ) == 'date' || $query->get( 'orderby' ) == '' ) {
 						$order_sql = str_replace( "$wpdb->posts.post_date", 'post_date', $order_sql );
 					}
